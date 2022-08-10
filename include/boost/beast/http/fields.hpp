@@ -59,7 +59,9 @@ class basic_fields
         std::allocator_traits<Allocator>::pointer>::value,
         "Allocator must use regular pointers");
 
+#ifndef BOOST_BEAST_DOXYGEN
     friend class fields_test; // for `header`
+#endif
 
     struct element;
 
@@ -72,7 +74,9 @@ public:
     /// The type of element used to represent a field
     class value_type
     {
+#ifndef BOOST_BEAST_DOXYGEN
         friend class basic_fields;
+#endif
 
         off_t off_;
         off_t len_;
@@ -615,6 +619,14 @@ public:
 
     /** Returns a range of iterators to the fields with the specified name.
 
+        This function returns the first and last iterators to the ordered
+        fields with the specified name.
+
+        @note The fields represented by the range are ordered. Its elements
+        are guaranteed to match the field ordering of the message. This
+        means users do not need to sort this range when comparing fields
+        of the same name in different messages.
+
         @param name The field name.
 
         @return A range of iterators to fields with the same name,
@@ -623,13 +635,7 @@ public:
     std::pair<const_iterator, const_iterator>
     equal_range(field name) const;
 
-    /** Returns a range of iterators to the fields with the specified name.
-
-        @param name The field name.
-
-        @return A range of iterators to fields with the same name,
-        otherwise an empty range.
-    */
+    /// @copydoc equal_range(field) const
     std::pair<const_iterator, const_iterator>
     equal_range(string_view name) const;
 
